@@ -1,0 +1,184 @@
+<html>
+<head>
+	<title>Alfred University: Clean Kit (Admin)</title>
+<style type="text/css">
+
+
+
+body{
+margin: 0;
+padding: 0;
+border: 0;
+overflow: hidden;
+height: 100%; 
+max-height: 100%; 
+}
+
+#framecontent{
+position: absolute;
+top: 0;
+bottom: 0; 
+left: 0;
+width: 200px; /*Width of frame div*/
+height: 100%;
+overflow: hidden; /*Disable scrollbars. Set to "scroll" to enable*/
+background: #FBB917;
+color: #68228B;
+}
+
+#maincontent{
+position: fixed;
+top: 0; 
+left: 200px; /*Set left value to WidthOfFrameDiv*/
+right: 0;
+bottom: 0;
+overflow: auto; 
+background: #68228B;
+color: #FBB917;
+}
+
+.innertube{
+margin: 15px; /*Margins for inner DIV inside each DIV (to provide padding)*/
+}
+
+* html body{ /*IE6 hack*/
+padding: 0 0 0 200px; /*Set value to (0 0 0 WidthOfFrameDiv)*/
+}
+
+* html #maincontent{ /*IE6 hack*/
+height: 100%; 
+width: 100%; 
+}
+
+A{text-decoration:none}
+
+a:link {
+COLOR: #68228B;
+}
+
+a:visited {
+COLOR: #68228B;
+}
+
+</style>
+
+<script type="text/javascript">
+			function radio1(){
+                document.getElementById("description").innerHTML = "Select this option to run a quick scan of your computer. This option should take between 5 and 10 minutes to complete.";
+            }
+			function radio2(){
+                document.getElementById("description").innerHTML = "Select this option to run a long scan of your computer. This option will scan all drives with Stinger as well as run a full scan with MSRT.";
+            }
+			function radio3(){
+                document.getElementById("description").innerHTML = "This will run Unhide.exe from BleepingComputer.com and will unhide all hidden files.";
+            }
+			function radio4(){
+                document.getElementById("description").innerHTML = "This option will clean all Temporary files.";
+            }
+			function radio5(){
+				document.getElementById("description").innerHTML = "This option will run TDSSKiller.";
+            }
+			function radio6(){
+				document.getElementById("description").innerHTML = "This will run the latest version of Combofix.<BR /> <BR /> If you don't know what ComboFix does, you're gonna have a bad time.";
+            }
+			function begin(){
+                document.getElementById("description").innerHTML = "Please wait while your selection is being processed.";
+            }
+</script>
+
+<script language=vbscript>
+
+Sub window_onload()
+
+    window.resizeTo 700, 437
+	
+End Sub
+
+Sub begin_onclick
+
+	Set WshShell = CreateObject("WScript.Shell")
+
+	If AppOption(0).Checked Then
+ 
+		OsType = WshShell.RegRead("HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\PROCESSOR_ARCHITECTURE")
+ 
+		If OsType = "x86" then
+			WshShell.Run "cmd.exe /C QuickScanx86.bat"
+		elseif OsType = "AMD64" then
+			WshShell.Run "cmd.exe /C Quickscanx64.bat"
+		End If
+
+	Elseif AppOption(1).Checked Then
+
+		OsType = WshShell.RegRead("HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\PROCESSOR_ARCHITECTURE")
+ 
+		If OsType = "AMD64" then
+			WshShell.Run "cmd.exe /C QuickScanx86ADM.bat"
+		elseif OsType = "AMD64" then
+			WshShell.Run "cmd.exe /C QuickScanx64ADM.bat"
+		End If
+
+	ElseIf AppOption(2).Checked Then
+		WshShell.Run "cmd.exe /C Unhide.bat"
+	ElseIf AppOption(3).Checked Then
+		WshShell.Run "cmd.exe /C TempClean.bat"
+	ElseIf AppOption(4).Checked Then
+		WshShell.Run "cmd.exe /C Rootscan.bat"
+	ElseIf AppOption(5).Checked Then
+		WshShell.Run "cmd.exe /C Combofix.bat"
+	Else
+		MsgBox "Please Select an Option"
+	End If
+	
+End Sub
+</script>
+
+</head>
+
+<body>
+
+<div id="framecontent">
+<div class="innertube">
+
+<h1>Clean Kit</h1>
+<h3>Select an Option<a href="http://www.reddit.com"">:</a></h3>
+<br><br>
+<table border=0 align="center">
+	<tr>
+		<td>
+			<input tabindex="1" type="radio" name="AppOption" value="0" onclick="radio1()"; />Virus Scan (Quick)
+			<input tabindex="2" type="radio" name="AppOption" value="1" onclick="radio2()"; />Virus Scan (Long)
+			<input tabindex="3" type="radio" name="AppOption" value="2" onclick="radio3()"; />Unhide <BR />
+			<input tabindex="4" type="radio" name="AppOption" value="3" onclick="radio4()"; />Clean Temp Files
+			<input tabindex="5" type="radio" name="AppOption" value="4" onclick="radio5()"; />TDSS Killer
+			<input tabindex="6" type="radio" name="AppOption" value="5" onclick="radio6()"; />Combofix <BR />
+		</td>
+	</tr>
+		<td><br /><br /></td>
+	</tr>
+	<tr>
+		<td align="center"><input tabindex="4" id="begin"  class="button" type="button" value="Begin!" name="begin" onclick="begin"; /></td>
+	</tr>
+	<tr>
+		<td align="center"><input tabindex="5" id="close" class="button" type="button" value=" Close " name="close_button" onClick="window.close()" /></td>
+</table>
+</div>
+</div>
+
+
+<div id="maincontent">
+<div class="innertube">
+
+<h1>Alfred University (ADMIN)</h1>
+<h3>Description:</h3>
+<br />
+<br />
+<p id="description">Welcome to the Alfred University Clean Kit Administrative Console!<br />
+					Please select the option on the left that fits what you would like to do.
+</p>
+</div>
+</div>
+
+
+</body>
+</html>
